@@ -29,18 +29,21 @@ def menuprincipal():
     if a == 1:
         b = input("Quel est le numéro de la commande désirée ?\n")
         print(menu1(b))
-        export_to_excel(menu1(b),'menu1')
+        export_to_excel(b,menu1(b),'menu1')
+        
     elif a == 2:
         hasfinished = False
-        while not hasfinished :
-            
+        while hasfinished==0 :
             c = int(input("Dans quelle pièce de la maison, le meuble sera-t'il installé ?\n1-Salon\n2-Salle à manger\n3-Cuisine\n4-Chambre\n5-Salle de Bain\n6-Bureau\n7-Entrée\n8-Jardin,Terrase et Balcon\n9-Buanderie et garage\n"))
             requete = requete + menu2(c)
-            hasfinished=input("Avez vous finit ? True ou False")
-        export_to_excel(requete,'menu2')
+            hasfinished=input("Avez vous finit ? 1 oui, 0 non")
+        export_to_excel(c,requete,'menu2')
+        
     elif a == 3:
         d = input("Quel type de renseignement voulez vous ?\n")
         menu3(d)
+        export_to_excel(d,menu3(d),'menu3')
+        
     else:
         print("La valeur rentrée ne correspond à aucune fonction")
 
@@ -65,17 +68,14 @@ def menu3(d):
     #export_to_excel(requete, 'menu2')
 
 
-def export_to_excel(data, sheet_name):
+def export_to_excel(requete_utilisateur,data, sheet_name):
     # Create a workbook and select the active sheet
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     sheet.title = sheet_name
 
-    # Set the column headers
-
-    sheet.cell(row=1, column=1, value='tnom')
-    sheet.cell(row=1, column=2, value='pnom')
-    sheet.cell(row=1, column=3, value='mobid')
+    for i in range(len(requete_utilisateur.split(","))):
+            sheet.cell(row=1,column=i,value=requete_utilisateur.split(",")[i])
 
     # Write the data to the sheet
     for i, row in enumerate(data, start=2):
